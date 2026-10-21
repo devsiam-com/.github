@@ -1,0 +1,6 @@
+{
+  "name": "Devsiam CI",
+  "description": "Devsiam standard CI: gitleaks secret scan plus a lint/test job to fill in.",
+  "iconName": "octicon shield-check",
+  "categories": ["Automation"]
+}

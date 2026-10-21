@@ -1,0 +1,20 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [$default-branch]
+
+permissions:
+  contents: read
+
+jobs:
+  secret-scan:
+    uses: devsiam-com/.github/.github/workflows/reusable-secret-scan.yml@main
+
+  lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Add the repo's lint and test steps here.
+      - run: echo "add lint and test steps"
