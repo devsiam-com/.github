@@ -26,7 +26,15 @@ Park unfinished work in a Draft PR. Infra and kit repos have no `dev` branch.
 - Use the PR template: What / Why / How tested / monday link / checklist.
 - CI must pass: lint, tests, gitleaks. Infra repos also run `terraform fmt`, `tflint`, `terraform plan`, `docker compose config`, `shellcheck`, `yamllint`.
 - AI opens the PR; the owner reviews and merges. Approval is not enforced (a solo owner cannot self-approve).
-- **Squash merge only.** Head branches are deleted automatically.
+- Merge method depends on the PR type. Head branches are deleted automatically.
+
+  | PR type | Merge method |
+  |---|---|
+  | feature → `main` (infra / kit) or feature → `develop` (app) | **Squash** |
+  | promotion / release: `develop` → `uat` → `main` | **Merge commit** (keeps branch histories in sync) |
+  | hotfix → `main`, then back-merge `main` → `develop` | **Merge commit** |
+
+  Never squash a long-lived branch into another: the branches diverge and the next release shows old commits and conflicts.
 - monday status: PR opened → `In Review`; merged → `Done`.
 
 ## 4. Secrets and safety
@@ -46,5 +54,8 @@ Park unfinished work in a Draft PR. Infra and kit repos have no `dev` branch.
 ## 6. Org and repo settings
 
 - Org plan: GitHub Team (rulesets on private repos).
-- Org ruleset on default branches: require PR, require status checks, block force push and deletion.
-- Repo settings: squash merge only, auto-delete head branches, default branch `main`.
+- Org ruleset `devsiam-default-branch` (default branch, all repos): require PR (0 approvals, conversation resolution), block force push and deletion, allowed merge methods **squash + merge commit**, no linear-history rule.
+- Org ruleset `devsiam-develop` (branches `develop` / `uat`, added when the first app repo exists): same rules.
+- Per-repo ruleset `require-ci`: required status checks for that repo's CI jobs (org rulesets cannot require checks that some repos lack).
+- Repo settings, infra / kit repos: squash merge only (PR title + description), always suggest updating PR branches, auto-delete head branches, default branch `main`.
+- Repo settings, app repos with `develop`: squash merge **and** merge commits enabled; everything else as above.
