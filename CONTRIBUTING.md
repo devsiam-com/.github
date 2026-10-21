@@ -6,4 +6,4 @@ Full rules: [docs/github-standard.md](https://github.com/devsiam-com/.github/blo
 2. Commit with Conventional Commits: `type(scope): summary`.
 3. Open a PR using the template. Link the monday task.
 4. CI must be green (lint, tests, gitleaks). No direct pushes to `main` or `develop`, including AI agents.
-5. Squash merge. The branch is deleted automatically.
+5. Squash merge feature PRs. Promotion / release PRs between long-lived branches (`develop` → `main`) use a merge commit. The branch is deleted automatically.
