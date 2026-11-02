@@ -53,7 +53,10 @@ Park unfinished work in a Draft PR. Infra and kit repos have no `dev` branch.
 
 ## 6. Org and repo settings
 
-- Org plan: GitHub Team (rulesets on private repos).
+- Org plan today: **Free**. Rulesets exist only on the public repos `.github`, `auth-gateway` and `vm-init`: require PR (0 approvals), block force push and deletion, strict required status checks for that repo's CI jobs, no bypass actors. Private repos (`devsiam-infra`, `devsiam-observatory`, `connex-*`) cannot have rulesets until the org moves to GitHub Team.
+- Org plan target: GitHub Team (rulesets on private repos). The org rulesets below apply from then on.
+- All repos (org and personal): "Always suggest updating PR branches" on, auto-merge off, auto-delete head branches on. Personal repos (`kittaweek`) use squash only and need no ruleset.
+- App repos use `dev` (default, staging) instead of `develop` / `uat`; `dev` is protected only after Team (it is not auto-deleted today because it is the default branch).
 - Org ruleset `devsiam-default-branch` (default branch, all repos): require PR (0 approvals, conversation resolution), block force push and deletion, allowed merge methods **squash + merge commit**, no linear-history rule.
 - Org ruleset `devsiam-develop` (branches `develop` / `uat`, added when the first app repo exists): same rules.
 - Per-repo ruleset `require-ci`: required status checks for that repo's CI jobs (org rulesets cannot require checks that some repos lack).
