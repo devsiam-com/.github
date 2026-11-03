@@ -25,7 +25,9 @@ Park unfinished work in a Draft PR. Infra and kit repos have no `dev` branch.
 - One PR per monday task; keep PRs small.
 - Use the PR template: What / Why / How tested / monday link / checklist.
 - CI must pass: lint, tests, gitleaks. Infra repos also run `terraform fmt`, `tflint`, `terraform plan`, `docker compose config`, `shellcheck`, `yamllint`.
-- AI opens the PR; the owner reviews and merges. Approval is not enforced (a solo owner cannot self-approve).
+- AI opens the PR; only the owner merges.
+- AI agents work through their own machine accounts, never the owner's: `devsiam-agy` (builder, role Write) and `devsiam-claude` (reviewer, role Write). Each has 2FA and a `@devsiam.com` alias email.
+- Approval: repos with a reviewer account require **1 approval**; the reviewer (`devsiam-claude`) approves after checking CI and the preview, then the owner merges. The PR author cannot approve their own PR. Repos without a reviewer account require 0 approvals (a solo owner cannot self-approve).
 - Merge method depends on the PR type. Head branches are deleted automatically.
 
   | PR type | Merge method |
@@ -54,11 +56,12 @@ Park unfinished work in a Draft PR. Infra and kit repos have no `dev` branch.
 ## 6. Org and repo settings
 
 - Org plan today: **Free**. Rulesets exist only on the public repos `.github`, `auth-gateway` and `vm-init`: require PR (0 approvals), block force push and deletion, strict required status checks for that repo's CI jobs, no bypass actors. Private repos (`devsiam-infra`, `devsiam-observatory`, `connex-*`) cannot have rulesets until the org moves to GitHub Team.
-- Org plan target: GitHub Team (rulesets on private repos). The org rulesets below apply from then on.
+- Org plan target: GitHub Team (rulesets on private repos), approved 3 Nov 2026 with 3 seats: `kittaweek` (owner), `devsiam-agy`, `devsiam-claude`. The org rulesets below apply from then on.
 - All repos (org and personal): "Always suggest updating PR branches" on, auto-merge off, auto-delete head branches on. Personal repos (`kittaweek`) use squash only and need no ruleset.
-- App repos use `dev` (default, staging) instead of `develop` / `uat`; `dev` is protected only after Team.
+- Client app repos (`connex-chat-*`) use `dev` (default, staging) instead of `develop` / `uat`; `dev` is protected only after Team. Devsiam-owned app repos (`devsiam-website`) use `develop`.
 - Org ruleset `devsiam-default-branch` (default branch, all repos): require PR (0 approvals, conversation resolution), block force push and deletion, allowed merge methods **squash + merge commit**, no linear-history rule.
 - Org ruleset `devsiam-develop` (branches `develop` / `uat`, added when the first app repo exists): same rules.
 - Per-repo ruleset `require-ci`: required status checks for that repo's CI jobs (org rulesets cannot require checks that some repos lack).
 - Repo settings, infra / kit repos: squash merge only (PR title + description), always suggest updating PR branches, auto-delete head branches, default branch `main`.
 - Repo settings, app repos with `develop`: squash merge **and** merge commits enabled; everything else as above.
+- Per-repo ruleset `devsiam-website`: `main` and `develop` require 1 approval, conversation resolution and the CI checks; `main` allows merge commit only, `develop` squash only; only the owner can merge.
