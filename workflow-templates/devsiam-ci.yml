@@ -15,6 +15,6 @@ jobs:
   lint-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # Add the repo's lint and test steps here.
       - run: echo "add lint and test steps"
